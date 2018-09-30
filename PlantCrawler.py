@@ -101,8 +101,7 @@ def scrape_text(urls: set):
 
 if __name__ == '__main__':
     # constant variables
-    starter_url = 'https://www.google.com/search?q=plant+care'
-    base_url = 'https://garden.org'
+    starter_url = 'https://www.google.com/search?q=garden+guide'
     dir_name = 'in'
     url_file_name = 'urls.txt'
 

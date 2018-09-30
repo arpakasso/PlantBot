@@ -32,12 +32,12 @@ def main():
                     if key in final_vocab:
                         final_vocab[key] += file_vocab[key]
                     else:
-                        file_vocab[key] = file_vocab[key]
+                        final_vocab[key] = file_vocab[key]
     count = 0
     for k in sorted(final_vocab, key=lambda k: final_vocab[k], reverse=True):   # print top 25 entries
         print(k)
         count += 1
-        if count == 25:
+        if count == 40:
             break
 
 
@@ -48,7 +48,7 @@ def clean_text(filename):
         sents = sent_tokenize(text)                                         # tokenize by sentences
         f.seek(0)                                                           # return to the top of the file
         f.truncate()                                                        # clear the file
-        f.write(' '.join(sents))                                            # write cleaned text back into file
+        f.write('\n'.join(sents))                                           # write cleaned text back into file
 
 
 def extract_terms(filename):

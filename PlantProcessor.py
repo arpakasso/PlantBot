@@ -4,7 +4,6 @@
 
 import re
 import os
-import sys
 import shutil
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
@@ -13,11 +12,10 @@ from nltk.corpus import stopwords
 
 def main():
     final_vocab = {}
-    plantdir = sys.argv[1]                                                  # dir that holds the og files
     newdir = 'out'
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
-    for root, dirs, files in os.walk(plantdir):                             # walk through all the files in OG dir
+    for root, dirs, files in os.walk('in'):                                 # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
             v2name = os.path.join(newdir, filename)                         # new file path

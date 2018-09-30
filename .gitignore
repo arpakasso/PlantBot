@@ -1,0 +1,5 @@
+*.txt
+plantfiles
+.idea
+*.iml
+venv

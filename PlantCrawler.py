@@ -1,9 +1,32 @@
+# CS 4301.001 PlantBot Project Part 1
+# Reena Suh & Elizabeth Trinh
+# September 24, 2018
+
 from bs4 import BeautifulSoup
+from bs4.element import Comment
 from urllib.request import Request, urlopen
 import urllib.error
 import ssl
 import os
-import re
+
+
+def main():
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
+
+    # retrieve urls
+    relevant_urls = set()
+    get_urls(starter_url, relevant_urls, set())
+    print("\n== retrieved urls ==\n")
+    print("Relevant Urls:\n" + '\n'.join(relevant_urls))
+    with open('urls.txt', 'w') as f_0:
+        f_0.write('\n'.join(relevant_urls))
+
+    # scrape urls
+    scrape_text(relevant_urls)
+    print('\n== scraped urls ==\n')
+
+    print("\n== end of crawler ==\n")
 
 
 def get_urls(source_url: str, url_set: set, visited: set):
@@ -53,9 +76,10 @@ def get_urls(source_url: str, url_set: set, visited: set):
 
 
 def visible(element):
-    if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+    # function to determine if an element is visible
+    if element.parent.name in ['style', 'script', '[document]', 'head', 'title', 'meta']:
         return False
-    elif re.match('<!--.*-->', str(element.encode('utf-8'))):
+    if isinstance(element, Comment):
         return False
     return True
 
@@ -68,33 +92,18 @@ def scrape_text(urls: set):
         soup = BeautifulSoup(html, 'html.parser')
         data = soup.findAll(text=True)
         result = filter(visible, data)
-        temp_list = list(result)  # list from filter
+        visible_text = list(result)  # list from filter
         curr_file_name = os.path.join(dir_name, str(count) + '.txt')
         print(curr_file_name)
         with open(curr_file_name, 'w', encoding='utf-8') as f:
-            f.write(' '.join(temp_list))
+            f.write(' '.join(t.strip() for t in visible_text))
 
 
 if __name__ == '__main__':
     # constant variables
     starter_url = 'https://www.google.com/search?q=plant+care'
     base_url = 'https://garden.org'
-    dir_name = 'plantfiles'
+    dir_name = 'in'
     url_file_name = 'urls.txt'
 
-    if not os.path.exists(dir_name):
-        os.mkdir(dir_name)
-
-    # retrieve urls
-    relevant_urls = set()
-    get_urls(starter_url, relevant_urls, set())
-    print("\n== retrieved urls ==\n")
-    print("Relevant Urls:\n" + '\n'.join(relevant_urls))
-    with open('urls.txt', 'w') as f_0:
-        f_0.write('\n'.join(relevant_urls))
-
-    # scrape urls
-    scrape_text(relevant_urls)
-    print('\n== scraped urls ==\n')
-
-    print("\n== end of crawler ==\n")
+    main()

@@ -14,13 +14,13 @@ from nltk.corpus import stopwords
 def main():
     final_vocab = {}
     plantdir = sys.argv[1]                                                  # dir that holds the og files
-    newdir = 'plantfiles2'
+    newdir = 'out'
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
     for root, dirs, files in os.walk(plantdir):                             # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
-            v2name = os.path.join(newdir + '/v2 ' + filename)               # new file path
+            v2name = os.path.join(newdir, filename)                         # new file path
             if not os.path.exists(newdir):                                  # if folder doesn't exist, don't create
                 print(newdir + ' not found')
                 continue                                                    # next file
@@ -42,12 +42,13 @@ def main():
 
 
 def clean_text(filename):
-    with open(filename, 'r+') as f:                                         # open file
+    with open(filename, 'r+', encoding='utf-8') as f:                       # open file
         text = f.read()                                                     # get text
-        text = re.sub(r'[\n\t]+', '', text)                                 # remove newline and tabs
+        text = re.sub(r'[\n\t\s]+', ' ', text)                              # remove newline, tabs, and spaces
         sents = sent_tokenize(text)                                         # tokenize by sentences
-        for sent in sents:                                                  # write cleaned text back into file
-            f.write(sent)
+        f.seek(0)                                                           # return to the top of the file
+        f.truncate()                                                        # clear the file
+        f.write(' '.join(sents))                                            # write cleaned text back into file
 
 
 def extract_terms(filename):
@@ -58,7 +59,7 @@ def extract_terms(filename):
         tokens = word_tokenize(text)                                        # tokenize
         unique_tokens = set(tokens)                                         # get unique tokens
         stop_words = set(stopwords.words('english'))                        # remove stopwords
-        important_tokens = [w for w in unique_tokens if not w in stop_words]
+        important_tokens = [w for w in unique_tokens if w not in stop_words]
         vocab = {}
         for token in important_tokens:                                      # fill vocab with token and their count
             vocab[token] = tokens.count(token)

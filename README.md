@@ -7,7 +7,7 @@ NLP Chat Bot for CS 4301 with Karen Mazidi
 
 ### Dialogue 1
 
-Hi, I'm \<insert plant bot name\>. I can help you with any of your planting needs. What is your name?
+Hi, I'm Kiwi. I can help you with any of your planting needs. What is your name?
 
 > My name is Reena.
 
@@ -35,7 +35,7 @@ Watermelons grow on vines spaced 6 feet apart and need full sun exposure. They p
 
 ### Dialogue 2
 
-Hi, I'm \<insert plant bot name\>. I can help you with any of your planting needs. What is your name?
+Hi, I'm Kiwi. I can help you with any of your planting needs. What is your name?
 
 > My name is Elizabeth.
 

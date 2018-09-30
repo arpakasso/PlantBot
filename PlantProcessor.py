@@ -12,6 +12,9 @@ from nltk.corpus import stopwords
 
 def main():
     final_vocab = {}
+<<<<<<< HEAD
+=======
+>>>>>>> f89f6da2ac46ee935d87f4d2ce32ac4fc695dc3f
     newdir = 'out'
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
@@ -56,7 +59,6 @@ def extract_terms(filename):
         text = re.sub(r'[^\d\w\s]', '', text)                               # keep only alphanumeric and whitespaces
         tokens = word_tokenize(text)                                        # tokenize
         unique_tokens = set(tokens)                                         # get unique tokens
-        stop_words = set(stopwords.words('english'))                        # remove stopwords
         important_tokens = [w for w in unique_tokens if w not in stop_words]
         vocab = {}
         for token in important_tokens:                                      # fill vocab with token and their count

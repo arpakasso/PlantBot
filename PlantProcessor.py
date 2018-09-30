@@ -12,9 +12,16 @@ from nltk.corpus import stopwords
 
 def main():
     final_vocab = {}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> f89f6da2ac46ee935d87f4d2ce32ac4fc695dc3f
+>>>>>>> 64e6f285fd6ef1bc728754ad753c4bb075b80d02
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
     for root, dirs, files in os.walk(plantdir):                             # walk through all the files in OG dir
+    for root, dirs, files in os.walk('in'):                                 # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
             v2name = os.path.join(newdir, filename)                         # new file path
@@ -64,10 +71,13 @@ def extract_terms(filename):
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     social_networks = {'pinterest', 'facebook', 'instagram', 'message',
                        'google', 'email', 'twitter', 'google+', 'bookmark',
                        'wishlist', 'text'}
     plantdir = 'in'                                                         # dir that holds the og files
     newdir = 'out'
 
+=======
+>>>>>>> 64e6f285fd6ef1bc728754ad753c4bb075b80d02
     main()

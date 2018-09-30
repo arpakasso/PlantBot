@@ -39,7 +39,7 @@ Hi, I'm Kiwi. I can help you with any of your planting needs. What is your name?
 
 > My name is Elizabeth.
 
-Hi Elizabeth. What would you like to plant?
+Hi Elizabeth. What would you like to grow?
 
 > I want to plant shade-giving trees.
 

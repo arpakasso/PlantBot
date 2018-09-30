@@ -56,7 +56,8 @@ def get_urls(source_url: str, url_set: set, visited: set):
                 i = link_str.find('#')
                 link_str = link_str[:i]
             if link_str.startswith('http') and 'google' not in link_str \
-                    and link_str.count('http') == 1:
+                    and '.jpg' not in link_str and '.pdf' not in link_str \
+                    and '.png' not in link_str and link_str.count('http') == 1:
                 if link_str not in url_set and res.getcode() == 200:
                     print(link_str)
                     url_set.add(link_str)

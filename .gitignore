@@ -1,6 +1,7 @@
 *.txt
 in
 out
+clean
 .idea
 *.iml
 venv

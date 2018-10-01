@@ -3,6 +3,7 @@
 # September 24, 2018
 
 from nltk.tokenize import sent_tokenize
+import os
 
 
 def main():
@@ -24,6 +25,31 @@ def launch_kiwi():
     print('\nI hope you learned a lot today!\nSee you next time!')
 
 
+def build_kb(dir_name: str, kb: dict):
+    path = os.path.join(os.getcwd(), dir_name)
+    for filename in os.listdir(path):
+        with open(os.path.join(path, filename), 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                for key in kb:
+                    if key in line:
+                        kb[key].append(line)
+
+
 if __name__ == "__main__":
     knowledgeFile = 'kiwiknowledge'
+    filedir = 'clean'
+    topics = {'vegetable': list(),
+              'flower': list(),
+              'tree': list(),
+              'shrub': list(),
+              'lawn': list(),
+              'soil': list(),
+              'fertilizer': list(),
+              'compost': list(),
+              'pest': list(),
+              'garden': list(),
+              'water': list()
+              }
+    build_kb(filedir, topics)
+    print(topics)
     main()

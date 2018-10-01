@@ -13,8 +13,6 @@ from nltk.corpus import stopwords
 
 def main():
     final_vocab = {}
-    plantdir = 'in'                                                         # dir that holds the og files
-    newdir = 'out'
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
     for root, dirs, files in os.walk(plantdir):                                 # walk through all the files in OG dir
@@ -75,4 +73,7 @@ if __name__ == "__main__":
     social_networks = {'pinterest', 'facebook', 'instagram', 'message',
                        'google', 'email', 'twitter', 'google+', 'bookmark',
                        'wishlist', 'text'}
+    plantdir = 'in'                                                         # dir that holds the og files
+    newdir = 'out'
+
     main()

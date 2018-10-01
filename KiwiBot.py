@@ -2,7 +2,6 @@
 # Reena Suh & Elizabeth Trinh
 # September 24, 2018
 
-from nltk.tokenize import sent_tokenize
 import os
 
 
@@ -15,10 +14,32 @@ def main():
 
 def launch_kiwi():
     print('\nHi! I\'m Kiwi!\nLet me tell you about plants and gardening!')
-    print('TOPICS:\n1. garden/gardening\t\t\t2. vegetables\n3. flowers\t\t\t\t\t4. trees')
+    print('TOPICS:\n1. garden\t\t\t\t\t2. vegetables\n3. flowers\t\t\t\t\t4. trees')
     print('5. shrubs\t\t\t\t\t6. soil\n7. fertilizer\t\t\t\t8. composting\n9. water\t\t\t\t\t10. pests')
     print('Input "stop" whenever you\'re done!')
-    topic = input('What would you like to learn about today? ')
+    switch_dict = {1: 'garden', 2: 'vegetable', 3: 'flower', 4: 'tree', 5: 'shrub',
+                   6: 'soil', 7: 'fertilizer', 8: 'compost', 9: 'water', 10: 'pest',}
+    usertopic = input('What would you like to learn about today? ')
+    facts = []
+    try:
+        topicnum = int(usertopic)
+        if 1 <= topicnum <= 10:
+            topic_key = switch_dict[topicnum]
+            facts = topics[topic_key]
+        else:
+            print('Invalid topic number.')
+            exit()
+    except ValueError:
+        if usertopic in topics:
+            facts = topics[usertopic]
+        else:
+            print('Invalid topic.')
+            exit()
+    count = 0
+    while count < len(facts):
+        if 'stop' in input(facts[count]).lower():
+            break
+        count += 1
     print('\nI hope you learned a lot today!\nSee you next time!')
 
 
@@ -33,8 +54,6 @@ def build_kb(dir_name: str, kb: dict):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-=======
     knowledgeFile = 'kiwiknowledge'
     filedir = 'clean'
     topics = {'vegetable': list(),
@@ -50,6 +69,4 @@ if __name__ == "__main__":
               'water': list()
               }
     build_kb(filedir, topics)
-    print(topics)
->>>>>>> e6abdff9c8ab99b840747e2a70c588bfc951f0f8
     main()

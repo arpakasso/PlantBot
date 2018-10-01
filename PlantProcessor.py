@@ -5,6 +5,7 @@
 import re
 import os
 import shutil
+import nltk
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -15,6 +16,7 @@ def main():
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
     for root, dirs, files in os.walk('in'):                                 # walk through all the files in OG dir
+    for root, dirs, files in os.walk(plantdir):                                 # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
             v2name = os.path.join(newdir, filename)                         # new file path
@@ -35,6 +37,7 @@ def main():
         print(k)
         count += 1
         if count == 40:
+        if count == 30:
             break
 
 
@@ -55,10 +58,18 @@ def extract_terms(filename):
         text = re.sub(r'[^\d\w\s]', '', text)                               # keep only alphanumeric and whitespaces
         tokens = word_tokenize(text)                                        # tokenize
         unique_tokens = set(tokens)                                         # get unique tokens
+        stop_words = set(stopwords.words('english')).union(social_networks) # remove stopwords
         important_tokens = [w for w in unique_tokens if w not in stop_words]
+        wnl = nltk.WordNetLemmatizer()
+        token_lemmas = [wnl.lemmatize(t) for t in tokens]
+        important_lemmas = [wnl.lemmatize(t) for t in important_tokens]
+        important_lemmas = set(important_lemmas)
+
         vocab = {}
         for token in important_tokens:                                      # fill vocab with token and their count
             vocab[token] = tokens.count(token)
+        for lemma in important_lemmas:                                      # fill vocab with token and their count
+            vocab[lemma] = token_lemmas.count(lemma)
         return vocab                                                        # return the vocab dict
 
 

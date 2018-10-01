@@ -44,10 +44,12 @@ def launch_kiwi():
 
 
 def build_kb(dir_name: str, kb: dict):
+    # use sentences from manually cleaned files
     path = os.path.join(os.getcwd(), dir_name)
     for filename in os.listdir(path):
         with open(os.path.join(path, filename), 'r', encoding='utf-8') as f:
             for line in f.readlines():
+                # check for mentions of each key in each line
                 for key in kb:
                     if key in line:
                         kb[key].append(line)
@@ -56,6 +58,7 @@ def build_kb(dir_name: str, kb: dict):
 if __name__ == "__main__":
     knowledgeFile = 'kiwiknowledge'
     filedir = 'clean'
+    # dictionary knowledge base
     topics = {'vegetable': list(),
               'flower': list(),
               'tree': list(),

@@ -2,7 +2,6 @@
 # Reena Suh & Elizabeth Trinh
 # September 24, 2018
 
-from nltk.tokenize import sent_tokenize
 import os
 
 
@@ -33,8 +32,6 @@ def build_kb(dir_name: str, kb: dict):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-=======
     knowledgeFile = 'kiwiknowledge'
     filedir = 'clean'
     topics = {'vegetable': list(),
@@ -50,6 +47,4 @@ if __name__ == "__main__":
               'water': list()
               }
     build_kb(filedir, topics)
-    print(topics)
->>>>>>> e6abdff9c8ab99b840747e2a70c588bfc951f0f8
     main()

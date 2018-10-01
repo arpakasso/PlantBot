@@ -32,6 +32,7 @@ def main():
                     else:
                         final_vocab[key] = file_vocab[key]
     count = 0
+    print('Top 30 Terms:')
     for k in sorted(final_vocab, key=lambda k: final_vocab[k], reverse=True):   # print top 25 entries
         print(k)
         count += 1

@@ -63,9 +63,9 @@ Cedar elms are hardy trees and can survive with very little care. They can grow 
 
 * vegetables
 * flowers
-* trees & shrubs
+* trees
+* shrubs
 * houseplants
-* lawn
 * soil & fertilizer
 * composting
 * pests

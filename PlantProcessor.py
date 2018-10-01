@@ -15,7 +15,6 @@ def main():
     final_vocab = {}
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
-    for root, dirs, files in os.walk('in'):                                 # walk through all the files in OG dir
     for root, dirs, files in os.walk(plantdir):                                 # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
@@ -36,7 +35,6 @@ def main():
     for k in sorted(final_vocab, key=lambda k: final_vocab[k], reverse=True):   # print top 25 entries
         print(k)
         count += 1
-        if count == 40:
         if count == 30:
             break
 
@@ -66,8 +64,6 @@ def extract_terms(filename):
         important_lemmas = set(important_lemmas)
 
         vocab = {}
-        for token in important_tokens:                                      # fill vocab with token and their count
-            vocab[token] = tokens.count(token)
         for lemma in important_lemmas:                                      # fill vocab with token and their count
             vocab[lemma] = token_lemmas.count(lemma)
         return vocab                                                        # return the vocab dict

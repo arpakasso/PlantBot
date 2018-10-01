@@ -15,7 +15,7 @@ def main():
     final_vocab = {}
     if not os.path.exists(newdir):                                          # make new dir for new files
         os.makedirs(newdir)
-    for root, dirs, files in os.walk(plantdir):                                 # walk through all the files in OG dir
+    for root, dirs, files in os.walk(plantdir):                             # walk through all the files in OG dir
         for filename in files:
             oldname = os.path.join(os.path.abspath(root), filename)         # old file path
             v2name = os.path.join(newdir, filename)                         # new file path

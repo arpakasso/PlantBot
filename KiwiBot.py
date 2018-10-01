@@ -22,21 +22,21 @@ def launch_kiwi():
     usertopic = input('What would you like to learn about today? ')
     facts = []
     try:
-        topicnum = int(usertopic)
-        if 1 <= topicnum <= 10:
-            topic_key = switch_dict[topicnum]
-            facts = topics[topic_key]
+        topicnum = int(usertopic)                                           # check if user input is a number
+        if 1 <= topicnum <= 10:                                             # check if input is within bounds
+            topic_key = switch_dict[topicnum]                               # assign matching key
+            facts = topics[topic_key]                                       # assign matching list of facts
         else:
             print('Invalid topic number.')
             exit()
-    except ValueError:
-        if usertopic in topics:
-            facts = topics[usertopic]
+    except ValueError:                                                      # if user input is a string
+        if usertopic in topics:                                             # check if input is valid
+            facts = topics[usertopic]                                       # assign matching list of facts
         else:
             print('Invalid topic.')
             exit()
     count = 0
-    while count < len(facts):
+    while count < len(facts):                                               # loops through list and print
         if 'stop' in input(facts[count]).lower():
             break
         count += 1
@@ -54,7 +54,6 @@ def build_kb(dir_name: str, kb: dict):
 
 
 if __name__ == "__main__":
-    knowledgeFile = 'kiwiknowledge'
     filedir = 'clean'
     topics = {'vegetable': list(),
               'flower': list(),

@@ -3,7 +3,6 @@
 # September 24, 2018
 
 from bs4 import BeautifulSoup
-from bs4.element import Comment
 from urllib.request import Request, urlopen
 import urllib.error
 import ssl

@@ -13,17 +13,13 @@ def main():
 
 
 def launch_kiwi():
-    print('\nHi! I\'m Kiwi!\nLet me tell you more about plants and gardening!')
-    print('Input "stop" whenever you\'re done!\n')
-    with open(knowledgeFile, 'r', encoding="utf8") as f:                    # open knowledge base file
-        text = f.read()
-        sents = sent_tokenize(text)                                         # sent tokenize text
-        for sent in sents:                                                  # loop through sents and print
-            if 'stop' in input(sent + ' ').lower():                         # if user jnputs 'STOP' then break
-                break
+    print('\nHi! I\'m Kiwi!\nLet me tell you about plants and gardening!')
+    print('TOPICS:\n1. garden/gardening\t\t\t2. vegetables\n3. flowers\t\t\t\t\t4. trees')
+    print('5. shrubs\t\t\t\t\t6. soil\n7. fertilizer\t\t\t\t8. composting\n9. water\t\t\t\t\t10. pests')
+    print('Input "stop" whenever you\'re done!')
+    topic = input('What would you like to learn about today? ')
     print('\nI hope you learned a lot today!\nSee you next time!')
 
 
 if __name__ == "__main__":
-    knowledgeFile = 'kiwiknowledge'
     main()

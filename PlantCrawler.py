@@ -40,7 +40,7 @@ def get_urls(source_url: str, url_set: set, visited: set):
     # find urls in the webpage
     for link in soup.find_all('a'):
         # stop when 15 links have been gathered
-        if len(url_set) >= 15:
+        if len(url_set) >= 20:
             return url_set
         link_str = str(link.get('href'))
         lower_link = link_str.lower()
@@ -55,15 +55,16 @@ def get_urls(source_url: str, url_set: set, visited: set):
             if '#' in link_str:
                 i = link_str.find('#')
                 link_str = link_str[:i]
-            if link_str.startswith('http') and 'google' not in link_str \
-                    and '.jpg' not in link_str and '.pdf' not in link_str \
-                    and '.png' not in link_str and link_str.count('http') == 1:
+            if link_str.startswith('http') and 'google' not in link_str and \
+                    'google' not in link_str and 'lawn' not in link_str and \
+                    '.jpg' not in link_str and '.pdf' not in link_str and \
+                    '.png' not in link_str and link_str.count('http') == 1:
                 if link_str not in url_set and res.getcode() == 200:
                     print(link_str)
                     url_set.add(link_str)
     # iterate and scrape thru links until enough are found
     for sub_link in url_set.copy():
-        if len(url_set) < 15:
+        if len(url_set) < 20:
             # check that the link hasn't been visited before
             if sub_link not in visited:
                 visited.add(sub_link)
@@ -76,28 +77,17 @@ def get_urls(source_url: str, url_set: set, visited: set):
     return url_set
 
 
-def visible(element):
-    # function to determine if an element is visible
-    if element.parent.name in ['style', 'script', '[document]', 'head', 'title', 'meta']:
-        return False
-    if isinstance(element, Comment):
-        return False
-    return True
-
-
 def scrape_text(urls: set):
     # scrape each of the urls
     for count, curr_url in enumerate(urls):
         req = Request(curr_url, headers={'User-Agent': 'Mozilla/5.0'})
         html = urlopen(req, context=ssl.SSLContext(ssl.PROTOCOL_TLS)).read()
         soup = BeautifulSoup(html, 'html.parser')
-        data = soup.findAll(text=True)
-        result = filter(visible, data)
-        visible_text = list(result)  # list from filter
+        data = soup.find_all(['h1','h2','h3','h4','h5','h6','p'], text=True)
         curr_file_name = os.path.join(dir_name, str(count) + '.txt')
         print(curr_file_name)
         with open(curr_file_name, 'w', encoding='utf-8') as f:
-            f.write(' '.join(t.strip() for t in visible_text))
+            f.write(' '.join(t.string.strip() for t in data))
 
 
 if __name__ == '__main__':

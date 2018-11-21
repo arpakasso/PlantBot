@@ -58,6 +58,7 @@ def get_urls(source_url: str, url_set: set, visited: set):
                     'google' not in link_str and 'lawn' not in link_str and \
                     '.jpg' not in link_str and '.pdf' not in link_str and \
                     '.png' not in link_str and link_str.count('http') == 1:
+                # check that the link is accessible
                 if link_str not in url_set and res.getcode() == 200:
                     print(link_str)
                     url_set.add(link_str)
@@ -82,6 +83,7 @@ def scrape_text(urls: set):
         req = Request(curr_url, headers={'User-Agent': 'Mozilla/5.0'})
         html = urlopen(req, context=ssl.SSLContext(ssl.PROTOCOL_TLS)).read()
         soup = BeautifulSoup(html, 'html.parser')
+        # only get text from header and paragraph tags
         data = soup.find_all(['h1','h2','h3','h4','h5','h6','p'], text=True)
         curr_file_name = os.path.join(dir_name, str(count) + '.txt')
         print(curr_file_name)

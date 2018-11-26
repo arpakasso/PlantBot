@@ -86,9 +86,11 @@ def serve_webhook():
         resp = fr.fulfillment_text(text)
     elif intent == "get.specificplant" or intent == "plant.info.specific":
         resp = fr.fulfillment_text(serve_plant(parameters))
-    elif intent == "suggestplants.locationknown":
+    elif intent == "suggestplants.locationknown" or intent == "suggestplants.fulfill":
         parameters = req.get('queryResult').get('outputContexts')[0].get('parameters')
         resp = fr.fulfillment_text(serve_plant_types(parameters))
+    # elif intent == "listplants.getlocation":
+    #
     else:
         resp = fr.fulfillment_text(resp)
     # return a fulfillment response
@@ -108,5 +110,5 @@ if __name__ == '__main__':
     plantdb.close()
 
     port = int(os.environ.get('PORT', 5000))
-    # app.run(host='0.0.0.0', port=port, threaded=True)
-    app.run(threaded=True)
+    app.run(host='0.0.0.0', port=port, threaded=True)
+    # app.run(threaded=True)

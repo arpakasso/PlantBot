@@ -9,7 +9,7 @@ Purpose:
 from flask import Flask, request
 import os
 import requests
-from df_response_lib import *
+from df_response_lib import fulfillment_response
 
 app = Flask(__name__)
 
@@ -23,6 +23,7 @@ def serve_zone(param):
 
 @app.route('/webhook', methods=['POST'])
 def serve_webhook():
+    fr = fulfillment_response()
     # build a request object
     req = request.get_json(force=True)
     print(req)
@@ -32,7 +33,7 @@ def serve_webhook():
     if action == "findzone.findzone-custom":
         resp = serve_zone(req.get('queryResult').get('parameters'))
     # return a fulfillment response
-    return simple_response(resp)
+    return fr.main_response(fulfillment_text=resp)
 
 
 if __name__ == '__main__':

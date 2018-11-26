@@ -6,7 +6,7 @@ Purpose:
 	Takes requests and returns data relating to the request.
 """
 
-from flask import Flask
+from flask import Flask, request
 import requests
 from df_response_lib import *
 

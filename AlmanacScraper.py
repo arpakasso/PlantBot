@@ -2,13 +2,19 @@ from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 import ssl
 from PlantPage import PlantPage
+import _pickle as pickle
+import sys
 
 def main():
     urls = get_links()
-    page_list = list()
+    page_list = dict()
     for url in urls:
-        page_list += [scrape_link(url)]
+        plant = scrape_link(url)
+        page_list[plant.name] = plant
     # page_list += [scrape_link("https://www.almanac.com/plant/growing-hyacinth-muscari")]
+    file = open("plantpages.pkl", "wb")
+    pickle.dump(page_list, file)
+    file.close()
     return page_list
 
 
@@ -126,9 +132,12 @@ def get_links():
 
 if __name__ == '__main__':
     # constant variables
+    sys.setrecursionlimit(3500)
     starter_url = 'https://www.almanac.com/gardening/growing-guides'
     base_url = 'https://www.almanac.com'
     db = dict()
-    content_db = dict()
     main()
+    dbfile = open("plantdb.pkl", "wb")
+    pickle.dump(db, dbfile)
+    dbfile.close()
     print(db)

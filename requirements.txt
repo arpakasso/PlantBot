@@ -3,4 +3,3 @@ gunicorn
 django-heroku
 flask
 requests
-os

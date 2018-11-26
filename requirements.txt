@@ -3,4 +3,4 @@ gunicorn
 django-heroku
 flask
 requests
-_pickle
+pickle

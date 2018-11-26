@@ -19,18 +19,20 @@ def serve_homepage():
     return 'homepage'
 
 def serve_zone(param):
-    return 'zone'
+    return param
 
-@app.route('/webhook', methods=['GET', 'POST'])
+@app.route('/webhook', methods=['POST'])
 def serve_webhook():
     # build a request object
     req = request.get_json(force=True)
+    print(req)
+    resp = "test"
     # fetch action from json
     action = req.get('queryResult').get('action')
     if action == "findzone.findzone-custom":
-        serve_zone(req.get('queryResult').get('parameters'))
+        resp = serve_zone(req.get('queryResult').get('parameters'))
     # return a fulfillment response
-    return {'fulfillmentText': 'This is a response from webhook.'}
+    return simple_response(resp)
 
 
 if __name__ == '__main__':

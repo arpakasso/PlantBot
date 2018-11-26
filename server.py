@@ -58,6 +58,14 @@ def serve_plant_types(param):
     return "You can plant " + ", ".join(relevant_plants).lower() + " in " + param.get('geo-city') + ", " + param.get('geo-state-us')
 
 
+def serve_plant_types_v2(param):
+    zone = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
+    zone_plants = plant_db['Hardiness Zones'][zone]
+    plant_types_plants = plant_db['Plant Type'][param.get('Plant_Types')]
+    relevant_plants = intersection(zone_plants, plant_types_plants)
+    return "You can plant " + ", ".join(relevant_plants).lower() + " in " + param.get('geo-city') + ", " + param.get('geo-state-us')
+
+
 def serve_plant(param):
     plant = param.get('specificplants')
     if plant in plant_list.keys():
@@ -85,10 +93,11 @@ def serve_webhook():
         resp = fr.fulfillment_text(text)
     elif intent == "get.specificplant" or intent == "plant.info.specific":
         resp = fr.fulfillment_text(serve_plant(parameters))
-    elif intent == "suggestplants.locationknown" or intent == "suggestplants.fulfill":
+    elif intent == "suggestplants.locationknown" or intent == "suggestplants.fulfill" or intent == "listplants-locationknown":
         parameters = req.get('queryResult').get('outputContexts')[0].get('parameters')
         resp = fr.fulfillment_text(serve_plant_types(parameters))
-    # elif intent == "listplants.getlocation":
+    elif intent == "listplants.getlocation":
+        resp = fr.fulfillment_text(serve_plant_types_v2(parameters))
     else:
         resp = fr.fulfillment_text(resp)
     # return a fulfillment response

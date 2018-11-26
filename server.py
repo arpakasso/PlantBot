@@ -77,24 +77,23 @@ def serve_webhook():
     req = request.get_json(force=True)
     print(req)
     # fetch action from json
-    zone = None
-    text = "brokoro"
+    resp = "brokoro"
     intent = req.get('queryResult').get('intent').get('displayName')
     parameters = req.get('queryResult').get('parameters')
     if intent == "find.zone.getlocation":
         zone, text = serve_zone(parameters)
+        resp = fr.fulfillment_text(text)
     elif intent == "get.specificplant" or intent == "plant.info.specific":
-        text = serve_plant(parameters)
+        resp = fr.fulfillment_text(serve_plant(parameters))
     elif intent == "suggestplants.locationknown" or intent == "suggestplants.fulfill":
         parameters = req.get('queryResult').get('outputContexts')[0].get('parameters')
-        text = serve_plant_types(parameters)
+        resp = fr.fulfillment_text(serve_plant_types(parameters))
     # elif intent == "listplants.getlocation":
-    #
+    else:
+        resp = fr.fulfillment_text(resp)
     # return a fulfillment response
-    req.get('queryResult')['fulfillmentText'] = text
-    req.get('queryResult').get('fulfillmentMessages')[0].get('text').get('text')[0] = text
-    # return json.dumps(fr.main_response(fulfillment_text=resp))
-    return json.dumps(req)
+    return json.dumps(fr.main_response(fulfillment_text=resp))
+    # return json.dumps(req)
 
 
 if __name__ == '__main__':

@@ -67,7 +67,7 @@ Cedar elms are hardy trees and can survive with very little care. They can grow 
 4. trees
 5. shrubs
 6. soil
-7. fartilizer
+7. fertilizer
 8. composting
 9. water
 10. pests

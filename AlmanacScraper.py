@@ -6,9 +6,9 @@ from PlantPage import PlantPage
 def main():
     urls = get_links()
     page_list = list()
-    # for url in urls:
-    #     page_list += [scrape_link(url)]
-    page_list += [scrape_link("https://www.almanac.com/plant/growing-hyacinth-muscari")]
+    for url in urls:
+        page_list += [scrape_link(url)]
+    # page_list += [scrape_link("https://www.almanac.com/plant/growing-hyacinth-muscari")]
     return page_list
 
 
@@ -53,6 +53,11 @@ def parse_table(plant, table):
 
 
 def match_h3_and_div(tag):
+    """
+    Retrieve only h3 tags and div tags with a specific class from Soup
+    :param tag: html element
+    :return: filtered soup
+    """
     try:
         if tag.name == 'h3' and 'pane-title' in tag.attrs['class']:
             return True
@@ -63,29 +68,45 @@ def match_h3_and_div(tag):
     return False
 
 def parse_page(plant, soup):
-    text = ""
+    """
+    Scrape data from a plant page. Store data in a dictionary (mock db)
+    and a PlantPage object.
+    :param plant: page title - the plant name
+    :param soup: bs4 object
+    :return: PlantPage object
+    """
+    text = ""   # stores text on the page
     urls = set()
     plant_page = PlantPage(plant)
-    # remove script tags from soup
-    [x.extract() for x in soup.findAll(['script', 'form'])]
-    # remove comments from soup
-    [x.extract() for x in soup.findAll('div', {'id':'comments'})]
-    curr_head = ""
+    [x.extract() for x in soup.findAll(['script', 'form'])]    # remove script tags from soup
+    [x.extract() for x in soup.findAll('div', {'id':'comments'})]    # remove comments from soup
+    curr_head = ""  # keep track of what the following text pertains to
     plant_page.add_heading(curr_head)
     for element in soup.find_all(match_h3_and_div):
+        # update the heading (topic)
         if element.name == 'h3':
             if element.get_text():
                 curr_head = element.get_text().strip()
                 plant_page.add_heading(curr_head)
                 text += curr_head + '\n'
+        # get text from the div
         else:
+            # save links from the div
             for link in element.find_all('a'):
                 if link.get('href'):
-                    urls.add(base_url + link.get('href'))
+                    if link.get('href')[0] == '/':
+                        urls.add(base_url + link.get('href'))
+                    else:
+                        urls.add(link.get('href'))
+            # save text from the div
             if element.get_text():
                 div_text = element.get_text().strip()
-                plant_page.add_div(curr_head, div_text)
+                for line in div_text.split('\n'):
+                    if line.strip():
+                        plant_page.add_div(curr_head, line)
                 text += div_text + '\n'
+    plant_page.set_text(text)
+    plant_page.set_references(urls)
     print(text)
     return plant_page
     # '\n'.join(urls)

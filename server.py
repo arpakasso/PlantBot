@@ -31,7 +31,7 @@ def serve_webhook():
     # fetch action from json
     action = req.get('queryResult').get('action')
     if action == "findzone.findzone-custom":
-        resp = serve_zone(req.get('queryResult').get('parameters'))
+        resp = fr.fulfillment_text(serve_zone(req.get('queryResult').get('parameters')))
     # return a fulfillment response
     return fr.main_response(fulfillment_text=resp)
 

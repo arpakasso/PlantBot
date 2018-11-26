@@ -51,7 +51,7 @@ def serve_zone(param):
 def serve_plant_types(param):
     zone = user.get_zone()
     if zone == "":
-        zone = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
+        zone, text = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
     zone_plants = plant_db['Hardiness Zones'][zone]
     plant_types_plants = plant_db['Plant Type'][param.get('Plant_Types')]
     relevant_plants = intersection(zone_plants, plant_types_plants)
@@ -59,7 +59,7 @@ def serve_plant_types(param):
 
 
 def serve_plant_types_v2(param):
-    zone = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
+    zone, text = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
     zone_plants = plant_db['Hardiness Zones'][zone]
     plant_types_plants = plant_db['Plant Type'][param.get('Plant_Types')]
     relevant_plants = intersection(zone_plants, plant_types_plants)

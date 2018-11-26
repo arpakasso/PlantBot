@@ -7,6 +7,7 @@ Purpose:
 """
 
 from flask import Flask, request
+import os
 import requests
 from df_response_lib import *
 
@@ -33,4 +34,5 @@ def serve_webhook():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, threaded=True)

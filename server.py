@@ -44,11 +44,18 @@ def serve_zone(param):
     zone_resp = json.loads(requests.get(zone_url).text)
     zone = re.sub('[^0-9]', '', zone_resp['zone'])
     user.set_zone(zone)
-    return "You live in Zone " + zone
+    text = "You live in Zone "+zone
+    return zone, text
 
 
-def serve_plant_types():
-    return 'plant type'
+def serve_plant_types(param):
+    zone = user.get_zone()
+    if zone == "":
+        zone = serve_zone({'geo-city':param.get('geo-city'), 'geo-state-us':param.get('geo-state-us')})
+    zone_plants = plant_db['Hardiness Zones'][zone]
+    plant_types_plants = plant_db['Plant Type'][param.get('Plant_Types')]
+    relevant_plants = intersection(zone_plants, plant_types_plants)
+    return "You can plant " + ", ".join(relevant_plants).lower() + " in " + param.get('geo-city') + ", " + param.get('geo-state-us')
 
 
 def serve_plant(param):
@@ -59,6 +66,9 @@ def serve_plant(param):
         return "Sorry, I don't know much about " + plant.lower()
 
 
+def intersection(lst1, lst2):
+    return [value for value in lst1 if value in lst2]
+
 
 @app.route('/webhook', methods=['POST'])
 def serve_webhook():
@@ -68,16 +78,24 @@ def serve_webhook():
     print(req)
     # fetch action from json
     resp = "brokoro"
+    zone = None
     intent = req.get('queryResult').get('intent').get('displayName')
     parameters = req.get('queryResult').get('parameters')
     if intent == "find.zone.getlocation":
-        resp = fr.fulfillment_text(serve_zone(parameters))
-    elif intent == "get.specificplant":
+        zone, text = serve_zone(parameters)
+        resp = fr.fulfillment_text(text)
+    elif intent == "get.specificplant" or intent == "plant.info.specific":
         resp = fr.fulfillment_text(serve_plant(parameters))
+    elif intent == "suggestplants.locationknown":
+        parameters = req.get('queryResult').get('outputContexts')[0].get('parameters')
+        resp = fr.fulfillment_text(serve_plant_types(parameters))
     else:
         resp = fr.fulfillment_text(resp)
     # return a fulfillment response
-    return json.dumps(fr.main_response(fulfillment_text=resp))
+    req.get('queryResult')['fulfillmentText'] = resp
+    req.get('queryResult').get('fulfillmentMessages')[0].get('text').get('text')[0] = resp
+    # return json.dumps(fr.main_response(fulfillment_text=resp))
+    return json.dumps(req)
 
 
 if __name__ == '__main__':
@@ -90,5 +108,5 @@ if __name__ == '__main__':
     plantdb.close()
 
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, threaded=True)
-    # app.run(threaded=True)
+    # app.run(host='0.0.0.0', port=port, threaded=True)
+    app.run(threaded=True)

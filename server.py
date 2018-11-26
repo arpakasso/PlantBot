@@ -52,7 +52,7 @@ def serve_plant_types():
 
 
 def serve_plant(param):
-    plant = param.get('specific-topics')
+    plant = param.get('specificplants')
     if plant in plant_list.keys():
         return plant_list[plant].get_data()[""][2]
     else:

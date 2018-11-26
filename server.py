@@ -13,7 +13,7 @@ import json
 from df_response_lib import fulfillment_response
 import re
 from User import User
-import _pickle as pickle
+import pickle
 
 
 app = Flask(__name__)
@@ -54,7 +54,7 @@ def serve_plant_types():
 def serve_plant(param):
     plant = param.get('specific-topics')
     if plant in plant_list.keys():
-        return plant_list[plant][""][2]
+        return plant_list[plant].get_data()[""][2]
     else:
         return "Sorry, I don't know much about " + plant.lower()
 
@@ -67,13 +67,15 @@ def serve_webhook():
     req = request.get_json(force=True)
     print(req)
     # fetch action from json
-    resp = ""
+    resp = "brokoro"
     action = req.get('queryResult').get('action')
     parameters = req.get('queryResult').get('parameters')
     if action == "findzone.findzone-custom":
         resp = fr.fulfillment_text(serve_zone(parameters))
     elif action == "getplanttype.getplanttype-yes":
         resp = fr.fulfillment_text(serve_plant(parameters))
+    else:
+        resp = fr.fulfillment_text(resp)
     # return a fulfillment response
     return json.dumps(fr.main_response(fulfillment_text=resp))
 

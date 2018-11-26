@@ -17,7 +17,7 @@ app = Flask(__name__)
 def serve_homepage():
     return 'homepage'
 
-def serve_zone():
+def serve_zone(param):
     return 'zone'
 
 @app.route('/webhook', methods=['GET', 'POST'])
@@ -26,6 +26,8 @@ def serve_webhook():
     req = request.get_json(force=True)
     # fetch action from json
     action = req.get('queryResult').get('action')
+    if action == "findzone.findzone-custom":
+        serve_zone(req.get('queryResult').get('parameters'))
     # return a fulfillment response
     return {'fulfillmentText': 'This is a response from webhook.'}
 

@@ -12,10 +12,14 @@ import requests
 import json
 from df_response_lib import fulfillment_response
 import re
+from User import User
+import _pickle as pickle
 
 
 app = Flask(__name__)
-
+user = User()
+plant_list = dict()
+plant_db = dict()
 
 @app.route('/')
 def serve_homepage():
@@ -39,7 +43,21 @@ def serve_zone(param):
     zone_url = "https://phzmapi.org/"+zip_code+".json"
     zone_resp = json.loads(requests.get(zone_url).text)
     zone = re.sub('[^0-9]', '', zone_resp['zone'])
+    user.set_zone(zone)
     return "You live in Zone " + zone
+
+
+def serve_plant_types():
+    return 'plant type'
+
+
+def serve_plant(param):
+    plant = param.get('specific-topics')
+    if plant in plant_list.keys():
+        return plant_list[plant][""][2]
+    else:
+        return "Sorry, I don't know much about " + plant.lower()
+
 
 
 @app.route('/webhook', methods=['POST'])
@@ -48,16 +66,27 @@ def serve_webhook():
     # build a request object
     req = request.get_json(force=True)
     print(req)
-    resp = "test"
     # fetch action from json
+    resp = ""
     action = req.get('queryResult').get('action')
+    parameters = req.get('queryResult').get('parameters')
     if action == "findzone.findzone-custom":
-        resp = fr.fulfillment_text(serve_zone(req.get('queryResult').get('parameters')))
+        resp = fr.fulfillment_text(serve_zone(parameters))
+    elif action == "getplanttype.getplanttype-yes":
+        resp = fr.fulfillment_text(serve_plant(parameters))
     # return a fulfillment response
     return json.dumps(fr.main_response(fulfillment_text=resp))
 
 
 if __name__ == '__main__':
+    plantpages = open('plantpages.pkl', 'rb')
+    plant_list = pickle.load(plantpages)
+    plantpages.close()
+
+    plantdb = open('plantdb.pkl', 'rb')
+    plant_db = pickle.load(plantdb)
+    plantdb.close()
+
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, threaded=True)
     # app.run(threaded=True)

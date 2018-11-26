@@ -68,11 +68,11 @@ def serve_webhook():
     print(req)
     # fetch action from json
     resp = "brokoro"
-    action = req.get('queryResult').get('action')
+    intent = req.get('queryResult').get('intent').get('displayName')
     parameters = req.get('queryResult').get('parameters')
-    if action == "findzone.findzone-custom":
+    if intent == "find.zone.getlocation":
         resp = fr.fulfillment_text(serve_zone(parameters))
-    elif action == "getplanttype.getplanttype-yes":
+    elif intent == "get.specificplant":
         resp = fr.fulfillment_text(serve_plant(parameters))
     else:
         resp = fr.fulfillment_text(resp)
